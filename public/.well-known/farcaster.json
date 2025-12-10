@@ -1,0 +1,32 @@
+{
+  "accountAssociation": {
+    "header": "TODO_REPLACE_WITH_BASE64_HEADER",
+    "payload": "TODO_REPLACE_WITH_BASE64_PAYLOAD",
+    "signature": "TODO_REPLACE_WITH_BASE64_SIGNATURE"
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "SparkQuote",
+    "homeUrl": "https://sparkquote-miniapp.vercel.app/",
+    "iconUrl": "https://sparkquote-miniapp.vercel.app/assets/icon.png",
+    "splashImageUrl": "https://sparkquote-miniapp.vercel.app/assets/splash.png",
+    "splashBackgroundColor": "#020617",
+    "subtitle": "Tiny sparks of motivation in one tap.",
+    "description": "SparkQuote is a tiny quote generator: tap for a new line, star your favorites, and keep a pocket of words that move you.",
+    "primaryCategory": "lifestyle",
+    "tags": [
+      "quotes",
+      "motivation",
+      "inspiration"
+    ],
+    "heroImageUrl": "https://sparkquote-miniapp.vercel.app/assets/hero.png",
+    "tagline": "Tiny sparks of motivation in one tap.",
+    "ogTitle": "SparkQuote",
+    "ogDescription": "SparkQuote is a tiny quote generator: tap for a new line, star your favorites, and keep a pocket of words that move you.",
+    "ogImageUrl": "https://sparkquote-miniapp.vercel.app/assets/hero.png",
+    "screenshotUrls": [
+      "https://sparkquote-miniapp.vercel.app/assets/screenshot-1.png"
+    ],
+    "noindex": true
+  }
+}
