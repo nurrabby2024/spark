@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SparkQuote</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="SparkQuote" />
+  <meta property="og:description" content="SparkQuote is a tiny quote generator: tap for a new line, star your favorites, and keep a pocket of words that move you." />
+  <meta property="og:image" content="https://sparkquote-miniapp.vercel.app/assets/hero.png" />
+  <meta property="og:url" content="https://sparkquote-miniapp.vercel.app/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Farcaster Mini App embed -->
+  <meta
+    name="fc:miniapp"
+    content='{
+      "version":"1",
+      "imageUrl":"https://sparkquote-miniapp.vercel.app/assets/embed-3x2.png",
+      "button":{
+        "title":"SparkQuote",
+        "action":{
+          "type":"launch_frame",
+          "name":"SparkQuote",
+          "url":"https://sparkquote-miniapp.vercel.app/",
+          "splashImageUrl":"https://sparkquote-miniapp.vercel.app/assets/splash.png",
+          "splashBackgroundColor":"#020617"
+        }
+      }
+    }'
+  />
+
+  <!-- Backward-compatible Frame meta -->
+  <meta
+    name="fc:frame"
+    content='{
+      "version":"1",
+      "imageUrl":"https://sparkquote-miniapp.vercel.app/assets/embed-3x2.png",
+      "button":{
+        "title":"SparkQuote",
+        "action":{
+          "type":"launch_frame",
+          "name":"SparkQuote",
+          "url":"https://sparkquote-miniapp.vercel.app/",
+          "splashImageUrl":"https://sparkquote-miniapp.vercel.app/assets/splash.png",
+          "splashBackgroundColor":"#020617"
+        }
+      }
+    }'
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617, #020617 50%, #000000 100%);
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 24px;
+      padding: 18px 16px 14px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 22px 50px rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 620px;
+    }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .env-pill {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #9ca3af;
+    }
+    .subtitle {
+      font-size: 0.82rem;
+      color: #9ca3af;
+    }
+    .quote-shell {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 0;
+    }
+    .quote-card {
+      width: 100%;
+      min-height: 160px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, #111827, #020617);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 14px 14px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .quote-text {
+      font-size: 0.98rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+    .quote-author {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      text-align: right;
+    }
+    .quote-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.76rem;
+      color: #6b7280;
+    }
+    .tag-pill {
+      border-radius: 999px;
+      padding: 2px 8px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+    .controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .ctrl-btn {
+      flex: 1;
+      border-radius: 999px;
+      border: none;
+      padding: 8px 0;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .ctrl-btn.primary {
+      background: linear-gradient(135deg, #22c55e, #14b8a6);
+      color: #020617;
+      box-shadow: 0 10px 24px rgba(34, 197, 94, 0.55);
+    }
+    .ctrl-btn.secondary {
+      background: rgba(15, 23, 42, 0.96);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+    .ctrl-btn.highlight {
+      background: rgba(250, 204, 21, 0.12);
+      color: #facc15;
+      border: 1px solid rgba(250, 204, 21, 0.6);
+    }
+    .stats-row {
+      font-size: 0.76rem;
+      color: #9ca3af;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 4px;
+      border-top: 1px dashed rgba(55, 65, 81, 0.8);
+    }
+    .stats-row strong {
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <header>
+      <div class="header-row">
+        <div class="title">SparkQuote</div>
+        <div class="env-pill" id="env-label">web</div>
+      </div>
+      <p class="subtitle">Tiny sparks of motivation in one tap.</p>
+    </header>
+
+    <section class="quote-shell">
+      <article class="quote-card">
+        <div>
+          <div class="quote-text" id="quote-text">Tap Next to draw a spark.</div>
+          <div class="quote-author" id="quote-author"></div>
+        </div>
+        <div class="quote-meta">
+          <span class="tag-pill" id="quote-tag">general</span>
+          <span id="favorite-label">0 favorites</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="controls">
+      <button class="ctrl-btn secondary" id="copy-btn">Copy</button>
+      <button class="ctrl-btn highlight" id="favorite-btn">★ Favorite</button>
+      <button class="ctrl-btn primary" id="next-btn">Next</button>
+    </section>
+
+    <footer class="stats-row">
+      <span id="seen-label">0 seen today</span>
+      <span id="mode-label">Mode: All quotes</span>
+    </footer>
+  </main>
+
+  <script src="/sparkquote-ui.js"></script>
+  <script type="module" src="/script.js"></script>
+</body>
+</html>
